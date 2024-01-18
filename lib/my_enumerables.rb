@@ -6,11 +6,17 @@ module Enumerable
   end
 
   def my_any
-    my_each { |elem| }
+    any_true = false
+    for item in self
+      any_true = true if yield(item)
+    end
+    any_true
   end
   
   def my_count
-
+    count = 0 
+    my_each { |i| count += 1 if yield(i)}
+    count
   end
 
   def my_each_with_index
@@ -21,16 +27,30 @@ module Enumerable
     end
   end
 
-  def my_inject
-
+  def my_inject(accumulator = 0)
+    base = accumulator
+    i = 0
+    until i == self.length do
+      base = yield(base, self[i])
+      i += 1
+    end
+    base
   end
 
   def my_map
-
+    new_array = []
+    my_each { |i| new_array << yield(i)}
+    new_array
   end
 
   def my_none
-
+    if block_given?
+      result = true
+      my_each { |i| result = false if yield(i)}
+      result
+    else
+      self
+    end
   end
 
   def my_select
