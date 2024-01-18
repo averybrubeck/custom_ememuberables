@@ -5,14 +5,11 @@ module Enumerable
     true
   end
 
-  def my_any
-    any_true = false
-    for item in self
-      any_true = true if yield(item)
-    end
-    any_true
+  def my_any?
+    my_each { |elem| return true if yield(elem) }
+    false
   end
-  
+
   def my_count
     count = 0 
     my_each { |i| count += 1 if yield(i)}
@@ -43,7 +40,7 @@ module Enumerable
     new_array
   end
 
-  def my_none
+  def my_none?
     if block_given?
       result = true
       my_each { |i| result = false if yield(i)}
@@ -54,7 +51,9 @@ module Enumerable
   end
 
   def my_select
-
+    new_array = []
+    my_each { |i| new_array << i if yield(i)}
+    new_array
   end
 end
 
